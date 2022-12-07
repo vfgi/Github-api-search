@@ -13,6 +13,14 @@ export const Container = styled.div`
     align-items: center;
 `
 
+export const ButtonContainer = styled.div`
+    width: 100%;
+    margin-bottom: 20px;
+    max-width: 500px;
+    display: flex;
+    justify-content: flex-start;
+`
+
 export const ProfileInfoContainer = styled.div`
     display: grid;
     grid-template-columns: 250px 1fr;

@@ -8,7 +8,7 @@ import { RootState } from "../../redux/rootReducers";
 import OctoCat from '../../components/Icons/octocat.png'
 import { Input } from "../../components/input";
 import { Button } from "../../components/Button";
-import { searchUsers, UserData } from "../../redux/reducers/searchUsers";
+import { searchUsers, setPage, setSearchName, UserData } from "../../redux/reducers/searchUsers";
 import { useAppDispatch } from "../../utils/hooks";
 import Pagination from "../../components/Pagination";
 import UserCard from "../../components/UserCard";
@@ -18,8 +18,8 @@ const Home = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const { searchData } = useSelector((state: RootState) => state)
-    const [search, setSearch] = useState('')
-    const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState(searchData.searchName)
+    const [currentPage, setCurrentPage] = useState(searchData.page);
     const [maxPageLimit, setMaxPageLimit] = useState(5);
     const [minPageLimit, setMinPageLimit] = useState(0);
     const pageNumberLimit = 5;
@@ -31,7 +31,10 @@ const Home = () => {
         response: searchData.pages,
     };
 
+    console.log(searchData)
+
     const onPageChange= (pageNumber: React.SetStateAction<number>)=>{
+        dispatch(setPage(Number(pageNumber)));
         dispatch(searchUsers({name: search, page: Number(pageNumber)}));
         setCurrentPage(pageNumber)
     }
@@ -41,7 +44,8 @@ const Home = () => {
             setMaxPageLimit(maxPageLimit - pageNumberLimit);
             setMinPageLimit(minPageLimit - pageNumberLimit);
         }
-        setCurrentPage(prev=> prev-1)
+        setCurrentPage(prev=> prev-1);
+        dispatch(setPage(currentPage - 1));
         dispatch(searchUsers({name: search, page: currentPage - 1}));
     }
 
@@ -51,11 +55,14 @@ const Home = () => {
            setMinPageLimit(minPageLimit + pageNumberLimit);
        }
        setCurrentPage(prev=>prev+1);
+       dispatch(setPage(currentPage + 1));
        dispatch(searchUsers({name: search, page: currentPage + 1 }));
     }
 
     const SearchNewUser = (num: React.SetStateAction<number>) => {
         dispatch(searchUsers({name: search, page: 1}));
+        dispatch(setPage(1));
+        dispatch(setSearchName(search));
         setCurrentPage(num);
     }
 

@@ -18,7 +18,9 @@ export interface Request {
 const initialState = {
   data: [],
   status: '',
-  pages: 0
+  pages: 0,
+  page: 1,
+  searchName: ''
 };
 
 export const searchUsers = createAsyncThunk(
@@ -36,8 +38,11 @@ export const searchUsersSlice = createSlice({
     name: 'usersSearch',
     initialState,
     reducers: {
-        setData: (state) => {
-            state.data = []
+        setSearchName: (state, action) => {
+            state.searchName = action.payload
+        },
+        setPage: (state, action) => {
+          state.page = action.payload
         },
     },
     extraReducers: (builder) => {
@@ -56,6 +61,6 @@ export const searchUsersSlice = createSlice({
       },
 })
 
-export const { setData } = searchUsersSlice.actions
+export const { setSearchName, setPage } = searchUsersSlice.actions
 
 export default searchUsersSlice.reducer

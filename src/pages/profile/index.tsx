@@ -7,7 +7,7 @@ import { RootState } from "../../redux/rootReducers";
 
 import { useAppDispatch } from "../../utils/hooks";
 import Pagination from "../../components/Pagination";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { searchUserProfile } from "../../redux/reducers/searchSingleUser";
 import UserIcon from "../../components/Icons/user";
 import { DefaultTheme, withTheme } from "styled-components";
@@ -20,6 +20,7 @@ import followerIcon from '../../components/Icons/follower.png'
 import followingIcon from '../../components/Icons/following.png'
 import repoIcon from '../../components/Icons/repoicon.png'
 import { searchRepositories } from "../../redux/reducers/searchRepos";
+import { Button } from "../../components/Button";
 
 interface Theme {
     theme: DefaultTheme
@@ -33,7 +34,9 @@ export interface RepoData {
 }
 
 const Profile = ({theme}: Theme) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
 
     const { name } = useParams();
     const { searchProfile, repos } = useSelector((state: RootState) => state)
@@ -85,6 +88,9 @@ const Profile = ({theme}: Theme) => {
 
     return (
        <S.Container>
+        <S.ButtonContainer>
+            <Button onClick={() => navigate(`/`)}>Back to listing</Button>
+        </S.ButtonContainer>
         <S.ProfileInfoContainer>
             <img src={searchProfile.data.avatar_url} alt="" />
             <S.InfoContainer>
